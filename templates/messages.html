@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Contact Messages{% endblock %}
+
+{% block content %}
+<h2>Contact Messages</h2>
+
+{% if messages %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for msg in messages %}
+        <tr>
+            <td>{{ msg.id }}</td>
+            <td>{{ msg.name }}</td>
+            <td>{{ msg.email }}</td>
+            <td>{{ msg.subject }}</td>
+            <td>{{ msg.message[:50] }}{% if msg.message|length > 50 %}...{% endif %}</td>
+            <td>{{ msg.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No messages yet.</p>
+{% endif %}
+{% endblock %}

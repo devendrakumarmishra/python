@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Text Summarizer{% endblock %}
+
+{% block content %}
+<h2>Text Summarizer</h2>
+<p><strong>What is this?</strong> Paste a long text and AI will extract the most important sentences.</p>
+<p><strong>How it works:</strong> The algorithm counts word frequency, scores each sentence by important words, and picks the top sentences.</p>
+
+<div class="section">
+    <form method="POST">
+        <div class="form-group">
+            <label for="text">Paste long text here:</label>
+            <textarea id="text" name="text" rows="10" class="form-input" placeholder="Paste a long article or paragraph here...">{{ text }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="num_sentences">Number of sentences in summary:</label>
+            <select name="num_sentences" id="num_sentences" class="form-input">
+                <option value="2" {% if num_sentences == 2 %}selected{% endif %}>2 sentences</option>
+                <option value="3" {% if num_sentences == 3 %}selected{% endif %}>3 sentences</option>
+                <option value="5" {% if num_sentences == 5 %}selected{% endif %}>5 sentences</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Summarize</button>
+    </form>
+</div>
+
+{% if summary %}
+<div class="section" style="margin-top: 20px;">
+    <h3>Summary</h3>
+    <div class="card">
+        <p>{{ summary }}</p>
+    </div>
+
+    <div class="card" style="margin-top: 15px;">
+        <h3>How This Works (Step by Step)</h3>
+        <ol>
+            <li><strong>Split into sentences</strong> — The text is broken into individual sentences</li>
+            <li><strong>Count word frequency</strong> — Words that appear often are considered important</li>
+            <li><strong>Score sentences</strong> — Each sentence gets a score based on its important words</li>
+            <li><strong>Pick top sentences</strong> — The highest-scoring sentences become the summary</li>
+            <li><strong>Reorder</strong> — Sentences are put back in original order so it reads naturally</li>
+        </ol>
+    </div>
+</div>
+{% endif %}
+
+<div class="section" style="margin-top: 20px;">
+    <h3>Sample Text to Try</h3>
+    <p><small>Copy and paste this into the box above:</small></p>
+    <div class="card">
+        <p>Artificial intelligence is transforming every industry. Machine learning, a subset of AI, allows computers to learn from data without being explicitly programmed. Deep learning, which uses neural networks, has achieved remarkable results in image recognition and natural language processing. Companies like Google, Microsoft, and OpenAI are investing billions in AI research. Self-driving cars use AI to navigate roads safely. Healthcare is using AI to detect diseases earlier than human doctors. However, AI also raises concerns about job displacement and privacy. Experts recommend learning AI skills to stay competitive in the job market. Python is the most popular programming language for AI development. Libraries like scikit-learn, TensorFlow, and PyTorch make it easier to build AI models.</p>
+    </div>
+</div>
+
+<p><a href="{{ url_for('ai_dashboard') }}">&larr; Back to AI Tools</a></p>
+{% endblock %}

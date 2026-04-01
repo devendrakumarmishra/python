@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}House Price Predictor{% endblock %}
+
+{% block content %}
+<h2>House Price Predictor</h2>
+<p><strong>What is this?</strong> Enter house details and AI predicts the price.</p>
+<p><strong>How it works:</strong> Multiple Linear Regression uses 2 features (area + bedrooms) together for a more accurate prediction.</p>
+
+<div class="section">
+    <form method="POST">
+        <div class="form-group">
+            <label for="square_feet">Square Feet:</label>
+            <input type="number" id="square_feet" name="square_feet" class="form-input" min="100" max="10000" value="{{ square_feet }}" placeholder="e.g., 2000">
+        </div>
+        <div class="form-group">
+            <label for="bedrooms">Number of Bedrooms:</label>
+            <input type="number" id="bedrooms" name="bedrooms" class="form-input" min="1" max="10" value="{{ bedrooms }}" placeholder="e.g., 3">
+        </div>
+        <button type="submit" class="btn">Predict Price</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="section" style="margin-top: 20px;">
+    <h3>Prediction Results</h3>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Predicted Price</h3>
+            <p class="stat-number" style="color: #27ae60;">{{ result.price_formatted }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Area</h3>
+            <p class="stat-number">{{ result.square_feet }} sq ft</p>
+        </div>
+
+        <div class="card">
+            <h3>Bedrooms</h3>
+            <p class="stat-number">{{ result.bedrooms }}</p>
+        </div>
+    </div>
+
+    <!-- How each feature contributes -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>How Each Feature Affects Price</h3>
+        <p>The model learned these weights from training data:</p>
+        <table class="data-table">
+            <thead>
+                <tr><th>Feature</th><th>Weight ($ per unit)</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Per Square Foot</strong></td>
+                    <td>${{ result.feature_weights.per_sqft }}</td>
+                    <td>Each extra sq ft adds ${{ result.feature_weights.per_sqft }} to price</td>
+                </tr>
+                <tr>
+                    <td><strong>Per Bedroom</strong></td>
+                    <td>${{ result.feature_weights.per_bedroom }}</td>
+                    <td>Each extra bedroom adds ${{ result.feature_weights.per_bedroom }} to price</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Why Multiple Regression is better -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>Why Multiple Regression?</h3>
+        <p><strong>Simple Regression:</strong> price = weight x area (only considers size)</p>
+        <p><strong>Multiple Regression:</strong> price = w1 x area + w2 x bedrooms (considers both!)</p>
+        <p>A 2000 sq ft house with 2 bedrooms costs different from a 2000 sq ft house with 4 bedrooms. Multiple regression captures this.</p>
+    </div>
+
+    <!-- Training data -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>Training Data</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Sq Feet</th><th>Bedrooms</th><th>Price</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>800</td><td>1</td><td>$100,000</td></tr>
+                <tr><td>1,000</td><td>2</td><td>$150,000</td></tr>
+                <tr><td>1,500</td><td>3</td><td>$200,000</td></tr>
+                <tr><td>2,000</td><td>3</td><td>$280,000</td></tr>
+                <tr><td>2,500</td><td>4</td><td>$350,000</td></tr>
+                <tr><td>3,000</td><td>5</td><td>$420,000</td></tr>
+                <tr><td>3,500</td><td>5</td><td>$480,000</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<p><a href="{{ url_for('ai_dashboard') }}">&larr; Back to AI Tools</a></p>
+{% endblock %}

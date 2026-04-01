@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar — only shown when user is logged in -->
+    {% if session.get('user') %}
+    <nav class="navbar">
+        <div class="nav-brand">Flask App</div>
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('notes') }}">Notes</a>
+            <a href="{{ url_for('search') }}">Search</a>
+            <a href="{{ url_for('upload_file') }}">Files</a>
+            <a href="{{ url_for('send_email') }}">Email</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+            <a href="{{ url_for('ai_dashboard') }}">AI Tools</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}" class="nav-logout">Logout</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="{% if session.get('user') %}main-container{% else %}auth-container{% endif %}">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for msg in messages %}
+            <div class="flash">{{ msg }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

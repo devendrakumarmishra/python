@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Upload Profile Image{% endblock %}
+
+{% block content %}
+<h2>Upload Profile Image</h2>
+
+<div class="form-card">
+    <!-- enctype="multipart/form-data" is REQUIRED for file uploads -->
+    <!-- Without it, the browser sends only the filename, not the actual file -->
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="profile_image">Select Image (png, jpg, jpeg, gif)</label>
+            <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
+            <!-- accept="image/*" shows only image files in the file picker -->
+        </div>
+        <button type="submit" class="btn">Upload</button>
+        <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

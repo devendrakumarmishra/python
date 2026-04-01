@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ session['user'] }}!</h2>
+
+<div class="dashboard-grid">
+    <!-- Stats Cards -->
+    <div class="card">
+        <h3>Total Notes</h3>
+        <p class="stat-number">{{ note_count }}</p>
+        <a href="{{ url_for('notes') }}" class="btn btn-small">View All</a>
+    </div>
+
+    <div class="card">
+        <h3>Profile</h3>
+        <p>{{ profile.full_name or 'Not set' }}</p>
+        <a href="{{ url_for('profile') }}" class="btn btn-small">View Profile</a>
+    </div>
+
+    <div class="card">
+        <h3>Quick Actions</h3>
+        <a href="{{ url_for('add_note') }}" class="btn btn-small">Add Note</a>
+        <a href="{{ url_for('upload_file') }}" class="btn btn-small" style="margin-top:8px;">Upload File</a>
+    </div>
+</div>
+
+<!-- Recent Notes -->
+<div class="section">
+    <h3>Recent Notes</h3>
+    {% if recent_notes %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in recent_notes %}
+            <tr>
+                <td>{{ note.title }}</td>
+                <td>{{ note.created_at }}</td>
+                <td><a href="{{ url_for('view_note', note_id=note.id) }}">View</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No notes yet. <a href="{{ url_for('add_note') }}">Create your first note!</a></p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}AI Tools Dashboard{% endblock %}
+
+{% block content %}
+<h2>AI / Machine Learning Tools</h2>
+<p>Explore different AI models. Each tool uses a different ML technique — click any to try it!</p>
+
+<div class="dashboard-grid">
+
+    <div class="card">
+        <h3>Sentiment Analysis</h3>
+        <p><strong>Technique:</strong> NLP (Natural Language Processing)</p>
+        <p>Type any text and AI will tell you if it's positive, negative, or neutral.</p>
+        <a href="{{ url_for('ai_sentiment') }}" class="btn btn-small">Try It</a>
+    </div>
+
+    <div class="card">
+        <h3>Text Summarizer</h3>
+        <p><strong>Technique:</strong> Extractive Summarization</p>
+        <p>Paste a long article and AI will pick out the most important sentences.</p>
+        <a href="{{ url_for('ai_summarize') }}" class="btn btn-small">Try It</a>
+    </div>
+
+    <div class="card">
+        <h3>Spam Detector</h3>
+        <p><strong>Technique:</strong> Logistic Regression (Classification)</p>
+        <p>Enter an email and the ML model predicts if it's spam or not.</p>
+        <a href="{{ url_for('ai_spam') }}" class="btn btn-small">Try It</a>
+    </div>
+
+    <div class="card">
+        <h3>Marks Predictor</h3>
+        <p><strong>Technique:</strong> Linear Regression</p>
+        <p>Enter hours studied and predict the exam marks using a trained model.</p>
+        <a href="{{ url_for('ai_marks') }}" class="btn btn-small">Try It</a>
+    </div>
+
+    <div class="card">
+        <h3>House Price Predictor</h3>
+        <p><strong>Technique:</strong> Multiple Linear Regression</p>
+        <p>Enter area and bedrooms to predict house price using multiple features.</p>
+        <a href="{{ url_for('ai_house') }}" class="btn btn-small">Try It</a>
+    </div>
+
+</div>
+
+<!-- Learning Section -->
+<div class="section" style="margin-top: 30px;">
+    <h3>AI/ML Concepts Used Here</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Concept</th>
+                <th>What It Does</th>
+                <th>Used In</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>NLP</strong></td>
+                <td>Teaches computers to understand human language</td>
+                <td>Sentiment Analysis</td>
+            </tr>
+            <tr>
+                <td><strong>Classification</strong></td>
+                <td>Puts data into categories (spam/not spam, yes/no)</td>
+                <td>Spam Detector</td>
+            </tr>
+            <tr>
+                <td><strong>Linear Regression</strong></td>
+                <td>Predicts a number by drawing a best-fit line</td>
+                <td>Marks Predictor</td>
+            </tr>
+            <tr>
+                <td><strong>Multiple Regression</strong></td>
+                <td>Uses 2+ inputs for more accurate predictions</td>
+                <td>House Price Predictor</td>
+            </tr>
+            <tr>
+                <td><strong>Extractive Summary</strong></td>
+                <td>Picks the most important sentences from text</td>
+                <td>Text Summarizer</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

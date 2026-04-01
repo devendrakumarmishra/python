@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Spam Detector{% endblock %}
+
+{% block content %}
+<h2>Spam Detector</h2>
+<p><strong>What is this?</strong> Enter an email/message and the ML model predicts if it's spam.</p>
+<p><strong>How it works:</strong> Logistic Regression model counts suspicious words and classifies the text as SPAM or NOT SPAM.</p>
+
+<div class="section">
+    <form method="POST">
+        <div class="form-group">
+            <label for="text">Enter email/message text:</label>
+            <textarea id="text" name="text" rows="5" class="form-input" placeholder="Example: Congratulations! You won a free iPhone! Click here to claim your prize now!">{{ text }}</textarea>
+        </div>
+        <button type="submit" class="btn">Check for Spam</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="section" style="margin-top: 20px;">
+    <h3>Results</h3>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Verdict</h3>
+            <p class="stat-number" style="color: {% if result.is_spam %}#e74c3c{% else %}#27ae60{% endif %};">
+                {% if result.is_spam %}SPAM{% else %}NOT SPAM{% endif %}
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Confidence</h3>
+            <p class="stat-number">{{ result.confidence }}%</p>
+            <p><small>How sure the model is</small></p>
+        </div>
+
+        <div class="card">
+            <h3>Spam Words Found</h3>
+            <p class="stat-number">{{ result.spam_word_count }}</p>
+        </div>
+    </div>
+
+    {% if result.spam_words_found %}
+    <div class="card" style="margin-top: 15px;">
+        <h3>Suspicious Words Detected</h3>
+        <p>
+        {% for word in result.spam_words_found %}
+            <span style="background: #e74c3c; color: white; padding: 3px 10px; border-radius: 12px; margin: 3px; display: inline-block;">{{ word }}</span>
+        {% endfor %}
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- How the model thinks -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>How the Model Decided</h3>
+        <ol>
+            <li>Scanned your text for known spam words (free, win, click, etc.)</li>
+            <li>Found <strong>{{ result.spam_word_count }}</strong> suspicious word(s)</li>
+            <li>Fed this count to the Logistic Regression model</li>
+            <li>Model's decision boundary: ~4-5 spam words = likely spam</li>
+            <li>Result: <strong>{% if result.is_spam %}SPAM{% else %}NOT SPAM{% endif %}</strong> with {{ result.confidence }}% confidence</li>
+        </ol>
+    </div>
+</div>
+{% endif %}
+
+<div class="section" style="margin-top: 20px;">
+    <h3>Try These Examples</h3>
+    <ul>
+        <li>"Hey, are we still meeting for lunch tomorrow?" (Not Spam)</li>
+        <li>"Congratulations! You won a free iPhone! Click here to claim your cash prize now!" (Spam)</li>
+        <li>"Limited time offer! Buy now and get a discount. Subscribe for free bonus!" (Spam)</li>
+        <li>"Please review the attached report before our meeting on Monday." (Not Spam)</li>
+    </ul>
+</div>
+
+<p><a href="{{ url_for('ai_dashboard') }}">&larr; Back to AI Tools</a></p>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<h2>Search Notes</h2>
+
+<div class="form-card">
+    <form method="GET" action="{{ url_for('search') }}">
+        <div class="form-group">
+            <div class="search-box">
+                <input type="text" name="q" placeholder="Search by title or content..." value="{{ query }}" required>
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if query %}
+<div class="section">
+    <h3>Results for "{{ query }}" ({{ results | length }} found)</h3>
+
+    {% if results %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Content Preview</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in results %}
+            <tr>
+                <td>{{ note.title }}</td>
+                <td>{{ note.content[:80] }}{% if note.content|length > 80 %}...{% endif %}</td>
+                <td>{{ note.created_at }}</td>
+                <td><a href="{{ url_for('view_note', note_id=note.id) }}">View</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No notes found matching your search.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

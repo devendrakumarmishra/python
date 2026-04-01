@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Send Email{% endblock %}
+
+{% block content %}
+<h2>Send Email</h2>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="recipient">To (Email Address)</label>
+            <input type="email" id="recipient" name="recipient" placeholder="recipient@example.com" required>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Email subject" required>
+        </div>
+        <div class="form-group">
+            <label for="body">Message</label>
+            <textarea id="body" name="body" rows="8" placeholder="Write your email message here..." required></textarea>
+        </div>
+        <button type="submit" class="btn">Send Email</button>
+    </form>
+
+    <div class="info-box" style="margin-top: 20px;">
+        <strong>Note:</strong> To use this feature, update the email configuration in app.py with your Gmail credentials and App Password.
+    </div>
+</div>
+{% endblock %}

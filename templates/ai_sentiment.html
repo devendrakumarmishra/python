@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Sentiment Analysis{% endblock %}
+
+{% block content %}
+<h2>Sentiment Analysis</h2>
+<p><strong>What is this?</strong> Type any text and AI will analyze if it's positive, negative, or neutral.</p>
+<p><strong>How it works:</strong> TextBlob library has a dictionary of words with emotional scores. It averages the scores of all words in your text.</p>
+
+<div class="section">
+    <form method="POST">
+        <div class="form-group">
+            <label for="text">Enter text to analyze:</label>
+            <textarea id="text" name="text" rows="5" class="form-input" placeholder="Example: I love learning Python! It's amazing and fun.">{{ text }}</textarea>
+        </div>
+        <button type="submit" class="btn">Analyze Sentiment</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="section" style="margin-top: 20px;">
+    <h3>Results</h3>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Sentiment</h3>
+            <p class="stat-number">{{ result.sentiment }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Polarity Score</h3>
+            <p class="stat-number">{{ result.polarity }}</p>
+            <p><small>-1.0 (negative) to +1.0 (positive)</small></p>
+        </div>
+
+        <div class="card">
+            <h3>Subjectivity</h3>
+            <p class="stat-number">{{ result.subjectivity }}</p>
+            <p><small>0.0 (factual) to 1.0 (opinion)</small></p>
+        </div>
+    </div>
+
+    <!-- Explanation -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>Understanding the Results</h3>
+        <p><strong>Polarity {{ result.polarity }}:</strong>
+        {% if result.polarity > 0.1 %}
+            Your text is positive! The words you used have positive emotional weight.
+        {% elif result.polarity < -0.1 %}
+            Your text is negative. The words carry negative emotional weight.
+        {% else %}
+            Your text is neutral — no strong positive or negative emotion detected.
+        {% endif %}
+        </p>
+        <p><strong>Subjectivity {{ result.subjectivity }}:</strong>
+        {% if result.subjectivity > 0.5 %}
+            This is mostly opinion-based (subjective).
+        {% else %}
+            This is mostly factual (objective).
+        {% endif %}
+        </p>
+    </div>
+</div>
+{% endif %}
+
+<div class="section" style="margin-top: 20px;">
+    <h3>Try These Examples</h3>
+    <ul>
+        <li>"I absolutely love this product! Best purchase ever!" (Very Positive)</li>
+        <li>"The weather is okay today." (Neutral)</li>
+        <li>"This is terrible. I hate waiting in long lines." (Negative)</li>
+        <li>"The Earth orbits the Sun." (Neutral + Objective)</li>
+    </ul>
+</div>
+
+<p><a href="{{ url_for('ai_dashboard') }}">&larr; Back to AI Tools</a></p>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Marks Predictor{% endblock %}
+
+{% block content %}
+<h2>Student Marks Predictor</h2>
+<p><strong>What is this?</strong> Enter hours studied and the AI predicts your exam marks.</p>
+<p><strong>How it works:</strong> Linear Regression draws a "best fit line" through training data and uses it to predict.</p>
+
+<div class="section">
+    <form method="POST">
+        <div class="form-group">
+            <label for="hours">Hours Studied (0-24):</label>
+            <input type="number" id="hours" name="hours" class="form-input" step="0.5" min="0" max="24" value="{{ hours }}" placeholder="Enter hours (e.g., 6)">
+        </div>
+        <button type="submit" class="btn">Predict Marks</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="section" style="margin-top: 20px;">
+    <h3>Prediction Results</h3>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Predicted Marks</h3>
+            <p class="stat-number">{{ result.predicted_marks }}</p>
+            <p><small>out of 100</small></p>
+        </div>
+
+        <div class="card">
+            <h3>Grade</h3>
+            <p class="stat-number">{{ result.grade }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Hours Studied</h3>
+            <p class="stat-number">{{ result.hours }}</p>
+        </div>
+    </div>
+
+    <!-- Model's math explained -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>The Math Behind It</h3>
+        <p>The model learned this equation from training data:</p>
+        <p style="font-size: 1.2em; text-align: center; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+            <strong>Marks = {{ result.model_slope }} x Hours + {{ result.model_intercept }}</strong>
+        </p>
+        <p>This means:</p>
+        <ul>
+            <li><strong>Slope ({{ result.model_slope }}):</strong> For every extra hour studied, marks increase by ~{{ result.model_slope }} points</li>
+            <li><strong>Intercept ({{ result.model_intercept }}):</strong> Base marks (if 0 hours studied) would be ~{{ result.model_intercept }}</li>
+        </ul>
+        <p><strong>Calculation:</strong> {{ result.model_slope }} x {{ result.hours }} + {{ result.model_intercept }} = {{ result.predicted_marks }}</p>
+    </div>
+
+    <!-- Training data used -->
+    <div class="card" style="margin-top: 15px;">
+        <h3>Training Data Used</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Hours</th><th>Marks</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>35</td></tr>
+                <tr><td>2</td><td>50</td></tr>
+                <tr><td>3</td><td>65</td></tr>
+                <tr><td>4</td><td>70</td></tr>
+                <tr><td>5</td><td>80</td></tr>
+                <tr><td>6</td><td>85</td></tr>
+                <tr><td>7</td><td>90</td></tr>
+                <tr><td>8</td><td>95</td></tr>
+            </tbody>
+        </table>
+        <p><small>The model learned the pattern from this data and can now predict for ANY hours value.</small></p>
+    </div>
+</div>
+{% endif %}
+
+<p><a href="{{ url_for('ai_dashboard') }}">&larr; Back to AI Tools</a></p>
+{% endblock %}
